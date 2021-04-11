@@ -1,15 +1,16 @@
 global1 = 34
 
-def cambiar_global():
+def cambiar_global(val):
     '''Cambiar una variable global
 
     Esta función debe asignarle a la variable global `global1` el valor que se
     le pasa como único argumento posicional.
     '''
-    pass
+    global global1 
+    global1 = val
 
 
-def anio_bisiesto():
+def anio_bisiesto(val):
     '''Responder si el entero pasado como argumento es un año bisiesto
     
     Para determinar si un año es bisiesto, se deben tener en cuenta las 
@@ -21,7 +22,11 @@ def anio_bisiesto():
 
     Retorna True o False
     '''
-    pass
+    if(val % 4 == 0):
+        if(val % 100 == 0 and not val % 400 == 0):
+            return False
+        return True
+    return False 
 
 def contar_valles():
     r'''Contar el número de valles
@@ -78,7 +83,12 @@ def pares_medias():
 # `lista`. Implementar el método __str__ para que devuelva un string con todos
 # los elementos del atributo `lista` unidos a través de comas. Ejemplo:
 # si `lista` es [1,2,3,4], __str__ debe devolver '1,2,3,4'
+class ListaComa:
+    def __init__(self,lista):
+        self.lista = lista
 
+    def __str__(self):
+        return str(self.lista).strip("[]").replace(" ","")
 
 
 
@@ -97,7 +107,24 @@ def pares_medias():
 # Ejemplo:
 # si `nombres` es ['Juan', 'David'] y `apellidos` es ['Torres', 'Salazar'],
 # el método `nombre completo` debe devolver  'Juan David Torres Salazar'
+class Persona:
+    def __init__(self,nombres,apellidos):
+        
+        self.nombres = []
+        self.apellidos = []
 
+        for nombre in nombres:
+            self.agregar(nombre,self.nombres)
+        for apellido in apellidos:
+            self.agregar(apellido,self.apellidos)
+
+    def nombre_completo(self):
+        nom_com = self.nombres + self.apellidos
+        return ' '.join(nom_com).strip()
+
+    def agregar(self,valor,lista):
+        if isinstance(valor,str):
+            lista.append(valor.lower().capitalize())
 
 
 
@@ -113,3 +140,14 @@ def pares_medias():
 # si `fecha_nacimiento` es 1985-10-21 y la fecha actual es 2020-10-20, el método
 # `edad` debe devover 35.
 
+from datetime import date
+
+class Persona1(Persona):
+
+  def __init__(self,nombres,apellidos,fecha_nacimiento):
+      super().__init__(nombres,apellidos)
+      self.fecha_nacimiento = fecha_nacimiento
+
+  def edad(self):
+      fecha_hoy = date.today() - self.fecha_nacimiento
+      return int(fecha_hoy.days/365.25)
